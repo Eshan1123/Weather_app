@@ -1,9 +1,16 @@
-
 const apiKey = '88b5a0734532259c67cb85841827a1d8'; // Replace with your OpenWeatherMap API key
+
+const background = document.querySelector('.background');
 
 document.getElementById('search-btn').addEventListener('click', () => {
   const city = document.getElementById('city-input').value.trim();
   if (city === '') return;
+
+  const weatherCard = document.getElementById('weather-card');
+  const errorMessage = document.getElementById('error-message');
+
+  weatherCard.style.display = 'none';
+  errorMessage.style.display = 'none';
 
   fetchWeatherData(city);
 });
@@ -17,19 +24,52 @@ async function fetchWeatherData(city) {
 
     const data = await response.json();
 
+    // Update UI
     document.getElementById('city-name').textContent = data.name;
-    document.getElementById('weather-desc').textContent = data.weather[0].description;
+    const desc = data.weather[0].description;
+    document.getElementById('weather-desc').textContent = desc.toUpperCase();
     document.getElementById('temp').textContent = `${Math.round(data.main.temp)}°C`;
     document.getElementById('humidity').textContent = data.main.humidity;
     document.getElementById('wind').textContent = Math.round(data.wind.speed);
-
-    // Set weather icon
-    const iconCode = data.weather[0].icon;
-    const iconUrl = ` https://openweathermap.org/img/wn/ ${iconCode}@2x.png`;
-    document.getElementById('weather-icon').src = iconUrl;
-
     document.getElementById('weather-card').style.display = 'block';
+
+    // Update background
+    updateBackground(desc);
+
   } catch (error) {
-    alert(error.message);
+    document.getElementById('error-message').textContent = error.message;
+    document.getElementById('error-message').style.display = 'block';
   }
 }
+
+function updateBackground(description) {
+  background.classList.remove('sunny-bg', 'cloudy-bg', 'rainy-bg', 'default-bg');
+
+  if (description.includes('sun')) {
+    background.classList.add('sunny-bg');
+  } else if (description.includes('cloud')) {
+    background.classList.add('cloudy-bg');
+  } else if (description.includes('rain') || description.includes('drizzle')) {
+    background.classList.add('rainy-bg');
+  } else {
+    background.classList.add('default-bg');
+  }
+}
+
+// Clear button
+document.getElementById('clear-btn').addEventListener('click', () => {
+  document.getElementById('weather-card').style.display = 'none';
+  document.getElementById('city-input').value = '';
+  background.classList.remove('sunny-bg', 'cloudy-bg', 'rainy-bg');
+  background.classList.add('default-bg');
+});
+
+// Allow Enter key
+document.getElementById('city-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    document.getElementById('search-btn').click();
+  }
+});
+
+// Auto-focus
+document.getElementById('city-input').focus();

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Weather Forecast App by Eshan Thapa</title>
+  <title>🌤️ Weather Forecast App</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="background"></div>
+  <div class="background default-bg"></div>
   <div class="container">
     <header>
       <h1>🌤️ Weather Forecast App</h1>
@@ -19,15 +19,17 @@
       <button id="search-btn">Search</button>
     </div>
 
+    <div id="error-message" class="error-message"></div>
+
     <div id="weather-card" class="weather-card">
       <h2 id="city-name"></h2>
       <p id="weather-desc"></p>
-      <img id="weather-icon" src="" alt="Weather Icon" />
       <h1 id="temp"></h1>
       <div class="details">
         <p>Humidity: <span id="humidity"></span>%</p>
         <p>Wind Speed: <span id="wind"></span> km/h</p>
       </div>
+      <button id="clear-btn">Clear</button>
     </div>
   </div>
 
