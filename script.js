@@ -23,6 +23,11 @@ async function fetchWeatherData(city) {
     document.getElementById('humidity').textContent = data.main.humidity;
     document.getElementById('wind').textContent = Math.round(data.wind.speed);
 
+    // Set weather icon
+    const iconCode = data.weather[0].icon;
+    const iconUrl = ` https://openweathermap.org/img/wn/ ${iconCode}@2x.png`;
+    document.getElementById('weather-icon').src = iconUrl;
+
     document.getElementById('weather-card').style.display = 'block';
   } catch (error) {
     alert(error.message);
